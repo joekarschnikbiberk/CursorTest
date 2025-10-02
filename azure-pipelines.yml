@@ -9,7 +9,7 @@ variables:
   BIBERK_URL: 'https://www-qa-portalspa.biberk.com'
   APOLLO_URL: 'https://biberk-apollo-qa.azurewebsites.net/underwriting/dashboard'
   # Set this to your ADO service connection with access to the Key Vault(s)
-  AZURE_SERVICE_CONNECTION: 'https://dev.azure.com/biberk'
+  AZURE_SERVICE_CONNECTION: 'joe.karschnik@biberk.com'
   # Key Vault names parsed from URIs in QA.runsettings
   APOLLO_KEYVAULT_NAME: 'xbibaoazckv-qa'
   FRONTENDQA_KEYVAULT_NAME: 'bibtestingeakv1'
