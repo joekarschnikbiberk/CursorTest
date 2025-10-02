@@ -1,0 +1,25 @@
+trigger:
+- master
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '20.x'
+  displayName: 'Use Node.js'
+
+- script: npm install
+  displayName: 'Install dependencies'
+
+- script: npx playwright install --with-deps
+  displayName: 'Install Playwright browsers'
+
+- script: npm run test:smoke
+  displayName: 'Run smoke tests'
+  env:
+    APOLLO_URL: $(APOLLO_URL)
+    APOLLO_USERNAME: $(APOLLO_USERNAME)
+    APOLLO_PASSWORD: $(APOLLO_PASSWORD)

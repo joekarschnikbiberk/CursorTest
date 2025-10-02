@@ -1,0 +1,20 @@
+{
+  "name": "CursorTest",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "cucumber-js --require-module ts-node/register --publish-quiet",
+    "test:smoke": "cucumber-js --require-module ts-node/register --tags '@smoke' --publish-quiet",
+    "test:integration": "cucumber-js --require-module ts-node/register --tags '@integration' --publish-quiet",
+    "test:regression": "cucumber-js --require-module ts-node/register --tags '@regression' --publish-quiet"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^10.0.1",
+    "@types/node": "^20.11.30",
+    "dotenv": "^16.4.5",
+    "playwright": "^1.47.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
+}

@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+
+jobs:
+  test-matrix:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        tag: ["@smoke", "@integration", "@regression", "@biberk and @smoke"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: npx playwright install --with-deps
+      - name: Run ${{ matrix.tag }}
+        run: npx cucumber-js --require-module ts-node/register --tags "${{ matrix.tag }}" --publish-quiet
+        env:
+          APOLLO_URL: ${{ secrets.APOLLO_URL }}
+          APOLLO_USERNAME: ${{ secrets.APOLLO_USERNAME }}
+          APOLLO_PASSWORD: ${{ secrets.APOLLO_PASSWORD }}
+          BIBERK_URL: ${{ secrets.BIBERK_URL }}
