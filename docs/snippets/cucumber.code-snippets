@@ -1,0 +1,23 @@
+{
+  "Scenario Outline": {
+    "prefix": "gherkin-outline",
+    "body": [
+      "Scenario Outline: ${1:title}",
+      "  Given ${2:precondition}",
+      "  When ${3:action}",
+      "  Then ${4:result}",
+      "  Examples:",
+      "    | ${5:column} |",
+      "    | ${6:value}  |"
+    ],
+    "description": "Insert a Scenario Outline with examples"
+  },
+  "Data Table": {
+    "prefix": "gherkin-table",
+    "body": [
+      "  | field | value |",
+      "  | ${1:name} | ${2:value} |"
+    ],
+    "description": "Insert a simple data table"
+  }
+}

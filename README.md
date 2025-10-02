@@ -30,12 +30,21 @@ Playwright + Cucumber (TypeScript) UI tests for Apollo and biBerk.
 - Pipeline: `azure-pipelines.yml`
 - Set variables (secret):
   - `APOLLO_URL`, `APOLLO_USERNAME`, `APOLLO_PASSWORD`
+- QA Key Vaults: `xbibaoazckv-qa`, `bibtestingeakv1`
+
+## Authoring & Onboarding
+
+- Read: `docs/gherkin-style.md`, `docs/step-reuse-catalog.md`
+- Envs & secrets: `docs/envs-and-secrets.md`
+- Cursor usage: `docs/cursor-usage.md`
+- Snippets: copy `docs/snippets/cucumber.code-snippets` into `.vscode/cucumber.code-snippets` for local use
 
 ## Structure
 
 - `features/` – Gherkin features
 - `src/steps/` – Step definitions (reused across scenarios)
 - `src/support/` – Hooks and world
+- `docs/` – Playbooks and onboarding
 
 ## Notes
 
