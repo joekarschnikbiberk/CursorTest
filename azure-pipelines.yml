@@ -1,9 +1,18 @@
 trigger:
-- master
-- main
+  - none
 
 pool:
-  vmImage: 'windows-latest'
+  name: BIBVMScaleSet-BIBProdE2VMSS01-pool
+
+variables:
+  # QA environment URLs from FrontEndQA BiBerkLOB/QA.runsettings
+  BIBERK_URL: 'https://www-qa-portalspa.biberk.com'
+  APOLLO_URL: 'https://biberk-apollo-qa.azurewebsites.net/underwriting/dashboard'
+  # Set this to your ADO service connection with access to the Key Vault(s)
+  AZURE_SERVICE_CONNECTION: 'https://dev.azure.com/biberk'
+  # Key Vault names parsed from URIs in QA.runsettings
+  APOLLO_KEYVAULT_NAME: 'xbibaoazckv-qa'
+  FRONTENDQA_KEYVAULT_NAME: 'bibtestingeakv1'
 
 steps:
 - task: NodeTool@0
@@ -17,9 +26,30 @@ steps:
 - script: npx playwright install --with-deps
   displayName: 'Install Playwright browsers'
 
-- script: npm run test:smoke
-  displayName: 'Run smoke tests'
+# Fetch QA secrets from Azure Key Vault. Ensure the service connection has get/list permissions.
+- task: AzureKeyVault@2
+  displayName: 'Fetch secrets from APOLLO Key Vault (QA)'
+  inputs:
+    azureSubscription: '$(AZURE_SERVICE_CONNECTION)'
+    KeyVaultName: '$(APOLLO_KEYVAULT_NAME)'
+    SecretsFilter: '*'
+    RunAsPreJob: false
+
+- task: AzureKeyVault@2
+  displayName: 'Fetch secrets from FRONTENDQA Key Vault (QA)'
+  inputs:
+    azureSubscription: '$(AZURE_SERVICE_CONNECTION)'
+    KeyVaultName: '$(FRONTENDQA_KEYVAULT_NAME)'
+    SecretsFilter: '*'
+    RunAsPreJob: false
+
+- script: |
+    echo Running QA smoke for Apollo UI...
+    npm run test:smoke
+  displayName: 'Run QA smoke (@smoke)'
   env:
-    APOLLO_URL: $(APOLLO_URL)
-    APOLLO_USERNAME: $(APOLLO_USERNAME)
-    APOLLO_PASSWORD: $(APOLLO_PASSWORD)
+    APOLLO_URL: '$(APOLLO_URL)'
+    BIBERK_URL: '$(BIBERK_URL)'
+    # Expect these to be populated by Key Vault tasks above
+    APOLLO_USERNAME: '$(APOLLO_USERNAME)'
+    APOLLO_PASSWORD: '$(APOLLO_PASSWORD)'
